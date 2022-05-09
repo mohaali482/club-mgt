@@ -23,3 +23,7 @@ class UserAdditionalInformation(models.Model):
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES)
     year = models.PositiveIntegerField(choices=YEAR_CHOICES)
     telegram_username = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return self.user
+    
