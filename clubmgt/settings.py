@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'division',
     'event',
     'feed',
-
+    'sub_division',
 ]
 
 MIDDLEWARE = [
