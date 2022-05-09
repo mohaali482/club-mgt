@@ -12,6 +12,11 @@ from django.core.mail import EmailMessage
 
 # Create your views here.
 
+
+def home(request):
+    return render(request, 'home.html')
+
+
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -24,12 +29,12 @@ def signup(request):
             message = render_to_string('message.html', {
                 'user': user,
                 'domain': current_site.domain,
-                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
-                'token':account_activation_token.make_token(user),
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
             })
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(
-                        mail_subject, message, to=[to_email]
+                mail_subject, message, to=[to_email]
             )
             email.send()
             return HttpResponse('Please confirm your email address to complete the registration')
