@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views.generic import DetailView
 
 from .forms import SignupForm
 from .tokens import account_activation_token
@@ -15,6 +16,10 @@ from .tokens import account_activation_token
 
 
 def home(request):
+    return render(request, 'home.html')
+
+
+def profile(request):
     return render(request, 'home.html')
 
 
@@ -60,3 +65,7 @@ def activate(request, uidb64, token):
         )
 
     return HttpResponse('Activation link is invalid!')
+
+class UserDetailView(DetailView):
+    model = User
+    template_name = "detail.html"
