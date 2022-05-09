@@ -1,7 +1,8 @@
-from django.urls import path
 from django.contrib.auth import views as auth_views
-from . import views
 from django.shortcuts import render
+from django.urls import path
+
+from . import views
 
 urlpatterns = [
     path('', views.home, name="home"),
