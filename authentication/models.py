@@ -16,6 +16,7 @@ YEAR_CHOICES = [
     (5, "Fifth year"),
 ]
 
+
 class UserAdditionalInformation(models.Model):
     user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
     phone_no = PhoneNumberField(blank=True, null=True)
