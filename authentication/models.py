@@ -26,3 +26,14 @@ class UserAdditionalInformation(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+class UserDivision(models.Model):
+    user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
+    division = models.ForeignKey("division.Division", on_delete=models.CASCADE, blank=True, null=True)
+    sub_division = models.ForeignKey("sub_division.SubDivision", on_delete=models.CASCADE, blank=True, null=True)
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.user)
