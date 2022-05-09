@@ -4,9 +4,12 @@ disable=
     C0115,
     C0116,
     R0903,
+    W0611,
 
 ignore-paths=migrations/
 
-ignore=tests.py
+ignore=
+    tests.py,
+    manage.py,
 
 ignored-classes=User
