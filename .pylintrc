@@ -1,11 +1,12 @@
 [main]
 disable=
-    C0114,
-    C0115,
-    C0116,
-    R0903,
+    C0114, ;docstring
+    C0115, ;docstring
+    C0116, ;docstring
+    R0903, ;too few public methods
     W0611,
     too-many-ancestors,
+    unused-argument,
 
 ignore-paths=migrations/
 
