@@ -5,7 +5,7 @@ from django.utils.http import urlsafe_base64_encode
 
 
 class Division(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=50)
     active = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=False)
