@@ -5,6 +5,7 @@ disable=
     C0116,
     R0903,
     W0611,
+    too-many-ancestors,
 
 ignore-paths=migrations/
 

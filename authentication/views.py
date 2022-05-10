@@ -4,14 +4,14 @@ from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView
 
-from .forms import UserUpdateForm, SignupForm
+from .forms import SignupForm, UserUpdateForm
 from .tokens import account_activation_token
 
 # Create your views here.
@@ -76,7 +76,7 @@ class UserUpdateView(UpdateView):
     form_class = UserUpdateForm
     success_url = reverse_lazy('profile')
 
-    def get_object(self, *args, **kwargs):
+    def get_object(self, queryset=None):
         try:
             user = self.request.user
         except User.DoesNotExist:
@@ -84,16 +84,16 @@ class UserUpdateView(UpdateView):
 
         if user is not None:
             return user
-        
         messages.error(self.request, "User not found.")
         return redirect('profile')
+
 
 class UserDetailView(DetailView):
     model = User
     template_name = "profile/detail.html"
     queryset = User.objects.filter(is_active=True)
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         uid64 = self.kwargs.get("id")
         uid = force_str(urlsafe_base64_decode(uid64))
         try:
@@ -103,6 +103,5 @@ class UserDetailView(DetailView):
 
         if user is not None:
             return user
-        
         messages.error(self.request, "User not found.")
-        return redirect('profile') # Change to list page.
+        return redirect('profile')  # Change to list page.
