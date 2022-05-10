@@ -7,6 +7,7 @@ disable=
     W0611,
     too-many-ancestors,
     unused-argument,
+    R0801, ;similar lines
 
 ignore-paths=migrations/
 
