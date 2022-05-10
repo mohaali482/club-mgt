@@ -1,0 +1,5 @@
+username: {{request.user.username}}
+school id: {{request.user.useradditionalinfo.year}}
+division: {{request.user.division}}
+lastLogin: {{request.user.last_login}}
+edit: <a href='{% url "update-profile" %}'>edit</a>

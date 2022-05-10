@@ -1,15 +1,17 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import DetailView
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, UpdateView
 
-from .forms import SignupForm
+from .forms import UserUpdateForm, SignupForm
 from .tokens import account_activation_token
 
 # Create your views here.
@@ -20,7 +22,8 @@ def home(request):
 
 
 def profile(request):
-    return render(request, 'home.html')
+    context = {'uid': urlsafe_base64_encode(force_bytes(request.user.pk))}
+    return render(request, 'profile/profile.html', context)
 
 
 def signup(request):
@@ -66,6 +69,40 @@ def activate(request, uidb64, token):
 
     return HttpResponse('Activation link is invalid!')
 
+
+class UserUpdateView(UpdateView):
+    model = User
+    template_name = "profile/update.html"
+    form_class = UserUpdateForm
+    success_url = reverse_lazy('profile')
+
+    def get_object(self, *args, **kwargs):
+        try:
+            user = self.request.user
+        except User.DoesNotExist:
+            user = None
+
+        if user is not None:
+            return user
+        
+        messages.error(self.request, "User not found.")
+        return redirect('profile')
+
 class UserDetailView(DetailView):
     model = User
-    template_name = "detail.html"
+    template_name = "profile/detail.html"
+    queryset = User.objects.filter(is_active=True)
+
+    def get_object(self):
+        uid64 = self.kwargs.get("id")
+        uid = force_str(urlsafe_base64_decode(uid64))
+        try:
+            user = self.queryset.get(pk=uid)
+        except User.DoesNotExist:
+            user = None
+
+        if user is not None:
+            return user
+        
+        messages.error(self.request, "User not found.")
+        return redirect('profile') # Change to list page.
