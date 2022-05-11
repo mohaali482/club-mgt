@@ -55,9 +55,10 @@ def signup(request):
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
+    except(TypeError, ValueError, OverflowError):
+        uid = -1
+    user = get_object_or_404(User, pk=uid)
+
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
@@ -77,9 +78,9 @@ class UserUpdateView(UpdateView):
     success_url = reverse_lazy('profile')
 
     def get_object(self, queryset=None):
-        try:
+        if not self.request.user.is_anonymous:
             user = self.request.user
-        except User.DoesNotExist:
+        else:
             user = None
 
         if user is not None:
