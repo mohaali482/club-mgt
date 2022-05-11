@@ -7,13 +7,8 @@ disable=
     W0611,
     too-many-ancestors,
     unused-argument,
-    R0801, ;similar lines
-
-ignore-paths=migrations,
+    R0801 ;similar lines
 
 ignore=
     tests.py,
-    manage.py,
-    migrations,
-
-ignored-classes=User
+    manage.py
