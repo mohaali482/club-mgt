@@ -9,7 +9,7 @@ disable=
     unused-argument,
     R0801, ;similar lines
 
-ignore-paths=migrations/
+ignore-paths=migrations
 
 ignore=
     tests.py,
