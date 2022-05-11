@@ -14,5 +14,6 @@ urlpatterns = [
          views.activate, name='activate'),
     path('profile/', views.profile, name='profile'),
     path('update/', views.UserUpdateView.as_view(), name='update-profile'),
-    path('detail/<slug:id>/', views.UserDetailView.as_view(), name='detail-profile'),
+    path('list/', views.UserListView.as_view(), name='list-user'),
+    path('detail/<slug:id>/', views.UserDetailView.as_view(), name='detail-user'),
 ]
