@@ -14,5 +14,6 @@ ignore-paths=migrations,
 ignore=
     tests.py,
     manage.py,
+    migrations,
 
 ignored-classes=User
