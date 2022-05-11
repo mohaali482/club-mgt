@@ -7,7 +7,7 @@ from django.utils.http import urlsafe_base64_encode
 class SubDivision(models.Model):
     division = models.ForeignKey("division.Division", on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
