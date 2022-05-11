@@ -7,7 +7,8 @@ disable=
     W0611,
     too-many-ancestors,
     unused-argument,
-    R0801 ;similar lines
+    R0801, ;similar lines
+    E1101  ;no-member
 
 ignore=
     tests.py,
