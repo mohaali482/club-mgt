@@ -3,13 +3,13 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.http import HttpResponse, Http404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, ListView
 
 from .forms import SignupForm, UserUpdateForm
 from .tokens import account_activation_token
@@ -84,8 +84,7 @@ class UserUpdateView(UpdateView):
 
         if user is not None:
             return user
-        messages.error(self.request, "User not found.")
-        return redirect('profile')
+        raise Http404
 
 
 class UserDetailView(DetailView):
@@ -96,12 +95,13 @@ class UserDetailView(DetailView):
     def get_object(self, queryset=None):
         uid64 = self.kwargs.get("id")
         uid = force_str(urlsafe_base64_decode(uid64))
-        try:
-            user = self.queryset.get(pk=uid)
-        except User.DoesNotExist:
-            user = None
+        user = get_object_or_404(self.queryset, pk=uid)
 
-        if user is not None:
-            return user
-        messages.error(self.request, "User not found.")
-        return redirect('profile')  # Change to list page.
+        return user
+
+
+class UserListView(ListView):
+    model = User
+    template_name = "list.html"
+    paginate_by = 10
+    queryset = User.objects.filter(is_active=True)
