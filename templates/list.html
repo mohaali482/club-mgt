@@ -1,7 +1,11 @@
 {% for object in page_obj %}
     {{ object }}
+    {% if perms.division.delete_division %}
     <a href="{% url 'division-delete' id=object.encoded_id %}">Delete</a>
+    {% endif %}
+    {% if perms.division.change_division %}
     <a href="{% url 'division-edit' id=object.encoded_id %}">edit</a>
+    {% endif %}
     <br>
 {% endfor %}
 
