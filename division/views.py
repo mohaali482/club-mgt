@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.encoding import force_str
@@ -12,17 +13,21 @@ from .forms import DivisionForm
 # Create your views here.
 
 
-class DivisionCreateView(CreateView):
+class DivisionCreateView(PermissionRequiredMixin, CreateView):
     model = Division
     template_name = "forms.html"
     form_class = DivisionForm
     success_url = reverse_lazy("division-list")
 
+    permission_required = ("division.add_division")
 
-class DivisionDetailView(DetailView):
+
+class DivisionDetailView(PermissionRequiredMixin, DetailView):
     model = Division
     template_name = "profile/detail.html"
     queryset = Division.objects.filter(active=True)
+    permission_required = ("division.view_division")
+
 
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
@@ -33,18 +38,21 @@ class DivisionDetailView(DetailView):
         return division
 
 
-class DivisionListView(ListView):
+class DivisionListView(PermissionRequiredMixin, ListView):
     model = Division
     template_name = "list.html"
     paginate_by = 5
     queryset = Division.objects.filter(active=True)
 
+    permission_required = ("division.view_division")
 
-class DivisionDeleteView(DeleteView):
+
+class DivisionDeleteView(PermissionRequiredMixin, DeleteView):
     model = Division
     template_name = "delete.html"
     success_url = reverse_lazy("division-list")
     queryset = Division.objects.filter(active=True)
+    permission_required = ("division.delete_division")
 
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
@@ -55,12 +63,14 @@ class DivisionDeleteView(DeleteView):
         return division
 
 
-class DivisionUpdateView(UpdateView):
+class DivisionUpdateView(PermissionRequiredMixin, UpdateView):
     model = Division
     template_name = "forms.html"
     form_class = DivisionForm
     success_url = reverse_lazy("division-list")
     queryset = Division.objects.filter(active=True)
+    permission_required = ("division.change_division")
+
 
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
