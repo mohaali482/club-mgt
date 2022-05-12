@@ -1,6 +1,8 @@
 {% for object in page_obj %}
-    {# Each "contact" is a Contact model object. #}
-    {{ object }}<br>
+    {{ object }}
+    <a href="{% url 'division-delete' id=object.encoded_id %}">Delete</a>
+    <a href="{% url 'division-edit' id=object.encoded_id %}">edit</a>
+    <br>
 {% endfor %}
 
 <div class="pagination">
