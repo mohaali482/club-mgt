@@ -38,3 +38,34 @@ class DivisionListView(ListView):
     template_name = "list.html"
     paginate_by = 5
     queryset = Division.objects.filter(active=True)
+
+
+class DivisionDeleteView(DeleteView):
+    model = Division
+    template_name = "delete.html"
+    success_url = reverse_lazy("division-list")
+    queryset = Division.objects.filter(active=True)
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        did64 = self.kwargs.get("id")
+        did = force_str(urlsafe_base64_decode(did64))
+        division = get_object_or_404(self.queryset, pk=did)
+
+        return division
+
+
+class DivisionUpdateView(UpdateView):
+    model = Division
+    template_name = "forms.html"
+    form_class = DivisionForm
+    success_url = reverse_lazy("division-list")
+    queryset = Division.objects.filter(active=True)
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        did64 = self.kwargs.get("id")
+        did = force_str(urlsafe_base64_decode(did64))
+        division = get_object_or_404(self.queryset, pk=did)
+
+        return division
