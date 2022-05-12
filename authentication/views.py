@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import DetailView, UpdateView, ListView
+from django.views.generic import DetailView, UpdateView, ListView, DeleteView
 
 from .forms import SignupForm, UserUpdateForm
 from .tokens import account_activation_token
@@ -106,3 +106,15 @@ class UserListView(ListView):
     template_name = "list.html"
     paginate_by = 10
     queryset = User.objects.filter(is_active=True)
+
+
+class UserDeleteView(DeleteView):
+    model = User
+    template_name = "delete.html"
+    success_url = reverse_lazy("home")
+
+    def get_object(self, queryset=None):
+        if not self.request.user.is_anonymous:
+            return self.request.user
+
+        raise Http404

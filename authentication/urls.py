@@ -16,4 +16,5 @@ urlpatterns = [
     path('update/', views.UserUpdateView.as_view(), name='update-profile'),
     path('list/', views.UserListView.as_view(), name='list-user'),
     path('detail/<slug:id>/', views.UserDetailView.as_view(), name='detail-user'),
+    path('delete/', views.UserDetailView.as_view(), name='detail-user'),
 ]
