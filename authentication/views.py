@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
@@ -9,7 +10,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import DetailView, UpdateView, ListView, DeleteView
+from django.views.generic import DetailView, UpdateView, ListView, DeleteView, TemplateView
 
 from .forms import SignupForm, UserUpdateForm
 from .tokens import account_activation_token
@@ -21,9 +22,19 @@ def home(request):
     return render(request, 'home.html')
 
 
-def profile(request):
-    context = {'uid': urlsafe_base64_encode(force_bytes(request.user.pk))}
-    return render(request, 'profile/profile.html', context)
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = "profile/profile.html"
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["uid"] = urlsafe_base64_encode(
+            force_bytes(self.request.user.pk))
+        return context
 
 
 def signup(request):
@@ -71,7 +82,7 @@ def activate(request, uidb64, token):
     return HttpResponse('Activation link is invalid!')
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = "profile/update.html"
     form_class = UserUpdateForm
@@ -108,7 +119,7 @@ class UserListView(ListView):
     queryset = User.objects.filter(is_active=True)
 
 
-class UserDeleteView(DeleteView):
+class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = User
     template_name = "delete.html"
     success_url = reverse_lazy("home")
