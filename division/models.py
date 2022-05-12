@@ -72,9 +72,6 @@ class Division(models.Model):
 
 
 class DivisionHeadManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset()
-
     def all(self):
         return self.get_queryset().filter(active=True)
 

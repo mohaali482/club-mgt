@@ -14,12 +14,11 @@ class DivisionAdmin(admin.ModelAdmin):
     form = DivisionForm
 
     def get_queryset(self, request):
-        qs = self.model.admin_page
+        queryset = self.model.admin_page
         ordering = self.get_ordering(request)
         if ordering:
-            qs = qs.order_by(*ordering)
-        return qs
-    
+            queryset = queryset.order_by(*ordering)
+        return queryset
 
 
 @admin.register(DivisionHead)
