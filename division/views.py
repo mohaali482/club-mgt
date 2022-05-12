@@ -7,8 +7,8 @@ from django.utils.http import urlsafe_base64_decode
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
-from .models import Division
-from .forms import DivisionForm
+from .models import Division, DivisionHead
+from .forms import DivisionForm, DivisionHeadForm
 
 # Create your views here.
 
@@ -79,3 +79,35 @@ class DivisionUpdateView(PermissionRequiredMixin, UpdateView):
         division = get_object_or_404(self.queryset, pk=did)
 
         return division
+
+class DivisionHeadCreateView(PermissionRequiredMixin, CreateView):
+    model = DivisionHead
+    form_class = DivisionHeadForm
+    template_name = "forms.html"
+    permission_required = (
+        "division.add_divisionhead"
+    )
+    success_url = reverse_lazy("division-list")
+
+
+class DivisionHeadDeleteView(PermissionRequiredMixin, DeleteView):
+    model = DivisionHead
+    template_name = "delete.html"
+    permission_required = (
+        "division.delete_divisionhead"
+    )
+    success_url = reverse_lazy("division-list")
+    queryset = DivisionHead.objects.filter(active=True)
+
+    def get_object(self, queryset=None):
+        dhid64 = self.kwargs.get("id")
+        dhid = force_str(urlsafe_base64_decode(dhid64))
+        division_head = get_object_or_404(self.queryset, pk=dhid)
+
+        return division_head
+
+class DivisionHeadListView(ListView):
+    model = DivisionHead
+    template_name = "list.html"
+    queryset = DivisionHead.objects.filter(active=True)
+    paginate_by = 10
