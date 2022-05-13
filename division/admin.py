@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Division, DivisionHead, AdminDivisionQuerySet
+from .models import Division, DivisionHead, DivisionHeadHistory
 from .forms import DivisionHeadForm, DivisionForm
 
 # Register your models here.
@@ -26,6 +26,14 @@ class DivisionHeadAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "division",
-        "active",
     )
     form = DivisionHeadForm
+
+@admin.register(DivisionHeadHistory)
+class DivisionHeadHistoryAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "division",
+        "started_date",
+        "ended_date",
+    )
