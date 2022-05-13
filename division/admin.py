@@ -29,6 +29,7 @@ class DivisionHeadAdmin(admin.ModelAdmin):
     )
     form = DivisionHeadForm
 
+
 @admin.register(DivisionHeadHistory)
 class DivisionHeadHistoryAdmin(admin.ModelAdmin):
     list_display = (
