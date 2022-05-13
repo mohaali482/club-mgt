@@ -28,7 +28,6 @@ class DivisionDetailView(PermissionRequiredMixin, DetailView):
     queryset = Division.objects.filter(active=True)
     permission_required = ("division.view_division")
 
-
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
         did64 = self.kwargs.get("id")
@@ -71,7 +70,6 @@ class DivisionUpdateView(PermissionRequiredMixin, UpdateView):
     queryset = Division.objects.filter(active=True)
     permission_required = ("division.change_division")
 
-
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
         did64 = self.kwargs.get("id")
@@ -79,6 +77,7 @@ class DivisionUpdateView(PermissionRequiredMixin, UpdateView):
         division = get_object_or_404(self.queryset, pk=did)
 
         return division
+
 
 class DivisionHeadCreateView(PermissionRequiredMixin, CreateView):
     model = DivisionHead
@@ -97,7 +96,6 @@ class DivisionHeadDeleteView(PermissionRequiredMixin, DeleteView):
         "division.delete_divisionhead"
     )
     success_url = reverse_lazy("division-list")
-    queryset = DivisionHead.objects.filter(active=True)
 
     def get_object(self, queryset=None):
         dhid64 = self.kwargs.get("id")
@@ -106,8 +104,12 @@ class DivisionHeadDeleteView(PermissionRequiredMixin, DeleteView):
 
         return division_head
 
-class DivisionHeadListView(ListView):
+
+class DivisionHeadListView(PermissionRequiredMixin, ListView):
     model = DivisionHead
     template_name = "list.html"
-    queryset = DivisionHead.objects.filter(active=True)
     paginate_by = 10
+
+    permission_required = (
+        "division.view_divisionhead"
+    )
