@@ -95,6 +95,7 @@ class DivisionHeadDeleteView(PermissionRequiredMixin, DeleteView):
     permission_required = (
         "division.delete_divisionhead"
     )
+    queryset = DivisionHead.objects.all()
     success_url = reverse_lazy("division-list")
 
     def get_object(self, queryset=None):
