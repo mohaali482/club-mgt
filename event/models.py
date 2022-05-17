@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -18,9 +19,13 @@ class Event(models.Model):
         return str(self.title)
 
 
-class EventImages(models.Model):
+class EventImage(models.Model):
     event = models.ForeignKey("event.Event", on_delete=models.CASCADE)
     image = models.ImageField(upload_to="events/")
+
+    class Meta:
+        verbose_name = _("Event image")
+        verbose_name_plural = _("Event images")
 
     def __str__(self):
         return str(self.event)

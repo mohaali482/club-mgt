@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, EventImages
+from .models import Event, EventImage
 
 # Register your models here.
 
@@ -8,6 +8,6 @@ from .models import Event, EventImages
 class EventAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(EventImages)
+@admin.register(EventImage)
 class EventImagesAdmin(admin.ModelAdmin):
     pass
