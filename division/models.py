@@ -107,15 +107,6 @@ class DivisionHead(models.Model):
         encode_id = urlsafe_base64_encode(force_bytes(self.pk))
         return encode_id
 
-    def delete(self, using=None, keep_parents=False):
-        division_head_history = DivisionHeadHistory()
-        division_head_history.user = self.user
-        division_head_history.division = self.division
-        division_head_history.started_date = self.created_at
-        division_head_history.ended_date = timezone.now()
-        division_head_history.save()
-        return super().delete(self)
-
 
 class DivisionHeadHistory(models.Model):
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
