@@ -19,6 +19,7 @@ YEAR_CHOICES = [
 
 class UserAdditionalInformation(models.Model):
     user = models.OneToOneField("auth.User", on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to="profiles/", null=True, blank=True)
     phone_no = PhoneNumberField(blank=True, null=True)
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES)
     year = models.PositiveIntegerField(choices=YEAR_CHOICES)
