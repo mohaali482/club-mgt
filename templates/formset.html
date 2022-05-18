@@ -2,8 +2,8 @@
     {% csrf_token %}
     {{form.as_p}}
     {{formset.as_p}}
-    <div class = "hidden">
+    {% comment %} <div class = "hidden">
         {{formset.empty_form.as_p}}
-    </div>
+    </div> {% endcomment %}
     <button type="submit">submit</button>
 </form>

@@ -1,10 +1,6 @@
 {% for object in page_obj %}
     {{ object }}
-    {% if perms.division.delete_division %}
-    {% comment %} <a href="{% url 'division-head-delete' id=object.encoded_id %}">Delete</a> {% endcomment %}
-    {% endif %}
-    {% if perms.division.change_division %}
-    {% comment %} <a href="{% url 'division-edit' id=object.encoded_id %}">edit</a> {% endcomment %}
-    {% endif %}
+    <a href="{% url 'event-delete' id=object.encoded_id %}">Delete</a>
+    <a href="{% url 'event-edit' id=object.encoded_id %}">edit</a>
     <br>
 {% endfor %}
