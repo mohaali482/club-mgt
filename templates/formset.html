@@ -1,11 +1,9 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
-    {{formset.management_form}}
-    {% for form in formset %}
-    <hr>
-    <hr>
-    {{form.as_p}}
-    {% endfor %}
+    {{formset.as_p}}
+    <div class = "hidden">
+        {{formset.empty_form.as_p}}
+    </div>
     <button type="submit">submit</button>
 </form>
