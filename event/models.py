@@ -12,8 +12,8 @@ class Event(models.Model):
     end_date = models.DateTimeField()
     is_public = models.BooleanField(default=True)
     active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=False)
-    updated_at = models.DateTimeField(auto_now=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.title)
@@ -21,7 +21,7 @@ class Event(models.Model):
 
 class EventImage(models.Model):
     event = models.ForeignKey("event.Event", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="events/")
+    image = models.ImageField(upload_to="events/", blank=True)
 
     class Meta:
         verbose_name = _("Event image")
