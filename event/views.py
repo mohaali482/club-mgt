@@ -1,7 +1,9 @@
 from django.forms.models import modelformset_factory
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from .forms import (EventForm, EventImageForm, EventImageFormset,
                     EventImageUpdateFormset)
@@ -14,7 +16,7 @@ class EventCreateView(CreateView):
     model = Event
     form_class = EventForm
     template_name = "forms.html"
-    success_url = reverse_lazy("division-list")
+    success_url = reverse_lazy("event-home")
 
     def get(self, request, *args, **kwargs):
         # pylint:disable=W0201
@@ -37,7 +39,8 @@ class EventCreateView(CreateView):
         for form_2 in formset:
             instance = form_2.save(commit=False)
             instance.event = self.object
-            instance.save()
+            if instance.image:
+                instance.save()
 
         return redirect(self.get_success_url())
 
@@ -51,8 +54,16 @@ class EventUpdateView(UpdateView):
     model = Event
     template_name = "formset.html"
     form_class = EventForm
-    success_url = reverse_lazy("division-list")
+    success_url = reverse_lazy("event-home")
     queryset = Event.objects.filter(active=True)
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        eid64 = self.kwargs.get("id")
+        eid = force_str(urlsafe_base64_decode(eid64))
+        event = get_object_or_404(self.queryset, pk=eid)
+
+        return event
 
     def get(self, request, *args, **kwargs):
         # pylint:disable=W0201
@@ -77,6 +88,33 @@ class EventUpdateView(UpdateView):
 
 class EventListView(ListView):
     model = Event
-    template_name = "list.html"
+    template_name = "list2.html"
     queryset = Event.objects.filter(active=True)
     paginate_by = 2
+
+class EventDeleteView(DeleteView):
+    model = Event
+    template_name = "delete.html"
+    success_url = reverse_lazy('event-home')
+    queryset = Event.objects.filter(active=True)
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        eid64 = self.kwargs.get("id")
+        eid = force_str(urlsafe_base64_decode(eid64))
+        event = get_object_or_404(self.queryset, pk=eid)
+
+        return event
+
+class EventDetailView(DetailView):
+    model = Event
+    template_name = "profile/detail.html"
+    queryset = Event.objects.filter(active=True)
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset()
+        eid64 = self.kwargs.get("id")
+        eid = force_str(urlsafe_base64_decode(eid64))
+        event = get_object_or_404(self.queryset, pk=eid)
+
+        return event
