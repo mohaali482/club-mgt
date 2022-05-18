@@ -1,10 +1,13 @@
-from django.utils.http import urlsafe_base64_decode
-from django.utils.encoding import force_str
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
+
 from .forms import SubDivisionForm
 from .models import SubDivision
+
 # Create your views here.
 
 

@@ -1,6 +1,7 @@
 from django.contrib import admin
+
+from .forms import DivisionForm, DivisionHeadForm
 from .models import Division, DivisionHead, DivisionHeadHistory
-from .forms import DivisionHeadForm, DivisionForm
 
 # Register your models here.
 

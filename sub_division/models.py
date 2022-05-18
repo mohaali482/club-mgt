@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+
 # Create your models here.
 
 

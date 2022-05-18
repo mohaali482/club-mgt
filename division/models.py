@@ -1,10 +1,12 @@
-from django.utils import timezone
 from django.db import models
 from django.db.models import Q
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
+
 from clubmgt.softdeletion import regenerate_field_for_soft_deletion
+
 # Create your models here.
 
 

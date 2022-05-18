@@ -4,13 +4,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
-from django.http import HttpResponse, Http404
-from django.shortcuts import redirect, render, get_object_or_404
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import DetailView, UpdateView, ListView, DeleteView, TemplateView
+from django.views.generic import (DeleteView, DetailView, ListView,
+                                  TemplateView, UpdateView)
 
 from .forms import SignupForm, UserUpdateForm
 from .tokens import account_activation_token

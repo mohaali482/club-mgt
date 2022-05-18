@@ -2,7 +2,7 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.utils import timezone
 
-from .models import DivisionHeadHistory, DivisionHead
+from .models import DivisionHead, DivisionHeadHistory
 
 
 @receiver(pre_delete, sender=DivisionHead)
